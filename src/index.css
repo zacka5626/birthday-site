@@ -1,3 +1,36 @@
+:root {
+  /* color system for site-wide theming */
+  --bg-1: #ffeaa7;
+  --bg-2: #fab1a0;
+  --bg-3: #ffd6ec;
+  --accent-3: #00d4ff;
+  --loving-pink: #ff77aa;
+  --accent-1: #ff6b6b;
+  --accent-2: #7a4cff;
+  --card-bg: #ffffff;
+  --muted: #f4ece7;
+  --glass: rgba(255,255,255,0.6);
+  --shadow-1: 0 6px 18px rgba(122,76,255,0.12);
+}
+
+/* gentle animated background shift */
+@keyframes bgShift {
+  0% { filter: hue-rotate(0deg) saturate(1); }
+  50% { filter: hue-rotate(10deg) saturate(1.05); }
+  100% { filter: hue-rotate(0deg) saturate(1); }
+}
+
+@keyframes floatY {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +38,155 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* keep base background neutral; App.css handles the colorful gradient */
+  background-color: var(--muted);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* small utility classes used by components for animation and emphasis */
+.soft-float { animation: floatY 6s ease-in-out infinite; }
+.fade-in-up { animation: fadeInUp 420ms cubic-bezier(.2,.9,.3,1) both; }
+.btn-glow {
+  transition: box-shadow 220ms ease, transform 160ms ease;
+}
+.btn-glow:hover { box-shadow: 0 14px 36px rgba(122,76,255,0.16); transform: translateY(-2px); }
+
+/* vibrant rainbow button animation */
+@keyframes rainbowShift {
+  0% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(25deg); }
+  100% { filter: hue-rotate(0deg); }
+}
+
+.btn-rainbow {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(122,76,255,0.12);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.btn-rainbow:hover { transform: translateY(-3px); animation: rainbowShift 3s linear infinite; }
+
+/* heart beat for little loving accents */
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.06); }
+  60% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+.loving { animation: heartBeat 900ms ease-in-out; }
+
+/* small glowing outline for interactive cards */
+.card-glow {
+  transition: box-shadow 240ms ease, transform 260ms cubic-bezier(.2,.9,.3,1);
+}
+.card-glow:hover { box-shadow: 0 16px 40px rgba(122,76,255,0.18); transform: translateY(-6px) scale(1.01); }
+
+/* subtle confetti stripes used as decorative overlay on large screens */
+.confetti-overlay::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10% -20% -10%;
+  background-image: linear-gradient(120deg, rgba(255,255,255,0.02) 0 10%, rgba(255,255,255,0) 10% 100%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: bgShift 14s linear infinite;
+}
+
+/* ------------------------------------------------------------------------
+   Prismic-style reusable CSS animation utilities & widgets
+   - Lightweight, pure-CSS utilities inspired by Prismic guides
+   - Non-breaking: these are utility classes you can add to elements
+   - No JS required; graceful fallbacks for older browsers
+   Usage examples:
+     <div class="prismic-fade">...</div>
+     <button class="hero-cta prismic-pulse">Celebrate</button>
+     <img class="tilt-on-hover"> or <div class="cube-wrapper tilt-on-hover">...
+------------------------------------------------------------------------ */
+
+@keyframes prismicFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes prismicSlideIn { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes prismicTilt { 0% { transform: rotateX(0) rotateY(0); } 50% { transform: rotateX(1deg) rotateY(-1deg); } 100% { transform: rotateX(0) rotateY(0); } }
+@keyframes prismicNeon { 0% { filter: drop-shadow(0 0 0 rgba(122,76,255,0)); } 50% { filter: drop-shadow(0 6px 18px rgba(122,76,255,0.18)); } 100% { filter: drop-shadow(0 0 0 rgba(122,76,255,0)); } }
+@keyframes prismicPulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+
+.prismic-fade { animation: prismicFade 420ms cubic-bezier(.2,.9,.3,1) both; }
+.prismic-slide { animation: prismicSlideIn 520ms cubic-bezier(.2,.9,.3,1) both; }
+.prismic-tilt { animation: prismicTilt 2s ease-in-out infinite; transform-origin: center; }
+.prismic-neon { animation: prismicNeon 2.4s ease-in-out infinite; }
+.prismic-pulse { animation: prismicPulse 1.6s ease-in-out infinite; }
+
+/* hover/focus variants (use when you want interactive response rather than continuous animation) */
+.tilt-on-hover { transition: transform 420ms cubic-bezier(.2,.9,.3,1); transform-origin: center; }
+.tilt-on-hover:hover, .tilt-on-hover:focus { transform: rotateX(4deg) rotateY(-6deg) translateZ(6px); }
+
+/* subtle parallax-like move on hover */
+.lift-on-hover { transition: transform 260ms cubic-bezier(.2,.9,.3,1), box-shadow 260ms ease; }
+.lift-on-hover:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 18px 48px rgba(122,76,255,0.12); }
+
+/* Neon outline utility for emphasis */
+.neon-outline { box-shadow: 0 6px 26px rgba(122,76,255,0.12), 0 0 18px rgba(122,76,255,0.06) inset; border-radius: 10px; }
+
+/* Hero CTA styles (small widget) - use on primary buttons */
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff6b6b 0%, #ff4ec4 50%, #7a4cff 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 12px 34px rgba(122,76,255,0.12);
+  transition: transform 200ms ease, box-shadow 200ms ease, filter 260ms ease;
+}
+.hero-cta:hover { transform: translateY(-4px); filter: brightness(1.03); }
+
+/* Floating badge widget */
+.floating-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.06));
+  color: var(--loving-pink);
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(122,76,255,0.08);
+  transform: translateZ(0);
+}
+
+/* Simple "card with animated gradient border" widget */
+.animated-border-card {
+  position: relative;
+  padding: 1rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
+  overflow: hidden;
+}
+.animated-border-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 0;
+  background: linear-gradient(90deg, rgba(255,125,125,0.12), rgba(122,76,255,0.12), rgba(255,206,102,0.10));
+  filter: blur(14px);
+  transform: translateY(-6px);
+  animation: bgShift 10s linear infinite;
+}
+.animated-border-card > * { position: relative; z-index: 1; }
+
+/* Small helper for accessibility: reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .prismic-fade, .prismic-slide, .prismic-tilt, .prismic-neon, .prismic-pulse, .tilt-on-hover, .lift-on-hover { animation: none; transition: none; }
+}
+
+

@@ -1,0 +1,176 @@
+.photo-gallery {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.photo-gallery h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 2.5rem;
+}
+
+.upload-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.upload-btn {
+  background: #ff6b6b;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.upload-btn:hover {
+  background: #ff5252;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.32s cubic-bezier(.2,.9,.3,1), box-shadow 260ms ease;
+  will-change: transform;
+}
+
+.gallery-item:hover {
+  transform: scale(1.04) translateY(-4px);
+  box-shadow: var(--shadow-1);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover img {
+  opacity: 0.8;
+}
+
+/* gentle pop when an image loads */
+@keyframes imgPop {
+  from { transform: scale(0.98); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.gallery-item img { animation: imgPop 420ms cubic-bezier(.2,.9,.3,1) both; }
+
+.gallery-item.card-glow { transition: transform 260ms ease, box-shadow 240ms ease; }
+.gallery-item.card-glow:hover { box-shadow: 0 18px 48px rgba(122,76,255,0.16); transform: translateY(-8px) scale(1.02); }
+
+/* 3D cube styles - graceful fallback for non-supporting browsers */
+.cube-wrapper {
+  perspective: 900px;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 600ms cubic-bezier(.2,.9,.3,1);
+}
+
+.cube .face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.cube .face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.cube .front  { transform: translateZ(0px); }
+.cube .right  { transform: rotateY( 90deg) translateZ(0px); }
+.cube .back   { transform: rotateY(180deg) translateZ(0px); }
+.cube .left   { transform: rotateY(-90deg) translateZ(0px); }
+
+/* Hover rotates cube slightly for a subtle 3D effect */
+.gallery-item:hover .cube { transform: rotateY(18deg) rotateX(4deg) translateZ(0); }
+
+/* Stronger effect on focus (keyboard users) */
+.cube-wrapper:focus .cube { transform: rotateY(18deg) rotateX(4deg) translateZ(0); outline: none; }
+
+/* If browser doesn't support 3D transform, fallback to normal image (no visual break) */
+@supports not (transform-style: preserve-3d) {
+  .cube, .cube .face, .cube-wrapper { transform: none; perspective: none; }
+  .cube .face { position: static; }
+}
+
+.delete-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: linear-gradient(135deg, var(--loving-pink) 5%, var(--accent-1) 45%, var(--accent-2) 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 240ms ease, transform 260ms ease, box-shadow 220ms ease;
+  box-shadow: 0 8px 20px rgba(122,76,255,0.12);
+}
+
+.gallery-item:hover .delete-btn {
+  opacity: 1;
+  transform: translateY(-2px) scale(1.02);
+}
+
+.delete-btn:hover { box-shadow: 0 14px 34px rgba(255,77,166,0.22); transform: translateY(-4px) scale(1.06); }
+
+/* entrance effect for gallery items */
+.gallery-item { animation: fadeInUp 420ms both; }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.modal-content img {
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+}
