@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import confetti from 'canvas-confetti';
 import './MessageBoard.css';
 
 const STORAGE_KEY = 'birthday.messages';
@@ -10,7 +11,6 @@ const MessageBoard = () => {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) return parsed;
-        return [];
       }
     } catch (e) {
       console.error('Failed to read messages from localStorage during init', e);
@@ -23,6 +23,7 @@ const MessageBoard = () => {
   });
 
   const [newMessage, setNewMessage] = useState('');
+  const audioRef = useRef(null);
 
   // Persist messages whenever they change
   useEffect(() => {
@@ -33,6 +34,14 @@ const MessageBoard = () => {
     }
   }, [messages]);
 
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 180,
+      spread: 90,
+      origin: { y: 0.6 },
+    });
+  };
+
   const addMessage = () => {
     if (newMessage.trim()) {
       const message = {
@@ -42,6 +51,13 @@ const MessageBoard = () => {
       };
       setMessages((prev) => [...prev, message]);
       setNewMessage('');
+
+      // celebrate with confetti & sound
+      triggerConfetti();
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(() => {});
+      }
     }
   };
 
@@ -52,6 +68,7 @@ const MessageBoard = () => {
   return (
     <section className="message-board">
       <h2>Leave a Message</h2>
+
       <div className="messages">
         {messages.length === 0 ? (
           <p className="empty">No messages yet — be the first!</p>
@@ -81,6 +98,7 @@ const MessageBoard = () => {
           ))
         )}
       </div>
+
       <div className="add-message">
         <textarea
           value={newMessage}
@@ -89,11 +107,18 @@ const MessageBoard = () => {
           rows={3}
         />
         <div className="controls">
-          <button onClick={addMessage} disabled={!newMessage.trim()}>
-            Add Message
+          <button
+            onClick={addMessage}
+            disabled={!newMessage.trim()}
+            aria-label="Add your birthday message"
+          >
+            Add Message 🎉
           </button>
         </div>
       </div>
+
+      {/* background music */}
+      <audio ref={audioRef} preload="auto" src="/happy_birthday.mp3" />
     </section>
   );
 };

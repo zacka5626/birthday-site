@@ -1,46 +1,16 @@
-<!doctype html>
-const diff = date - now;
-if(diff<=0){ countdownEl.textContent = '🎉 It's time!'; countdownEl.setAttribute('aria-hidden','false'); clearInterval(countdownInterval); return; }
-const days = Math.floor(diff/86400000); const hrs = Math.floor((diff%86400000)/3600000); const mins = Math.floor((diff%3600000)/60000); const secs = Math.floor((diff%60000)/1000);
-countdownEl.textContent = `${days}d ${hrs}h ${mins}m ${secs}s`;
-countdownEl.setAttribute('aria-hidden','false');
-}
-update(); countdownInterval = setInterval(update, 1000);
-}
-
-
-// If user provided a ?date=YYYY-MM-DD param, set it
-if(initialDate){ try{ const d = new Date(initialDate); if(!isNaN(d)) setCountdownTarget(d);}catch(e){}
-}
-
-
-// Load last greeting
-window.addEventListener('load', ()=>{
-const saved = localStorage.getItem('lastGreeting');
-if(saved){ try{ const obj = JSON.parse(saved); nameInput.value = obj.name || '' ; messageInput.value = obj.msg || '' ; accentSelect.value = obj.accent || '#ff6b6b'; showGreeting(); }catch(e){}
-}
-// If query params provided, show automatically
-if(initialName || initialMessage) showGreeting();
-
-
-// register service worker
-if('serviceWorker' in navigator){
-navigator.serviceWorker.register('sw.js').then(()=> console.log('SW registered')).catch(()=> console.warn('SW failed'));
-}
-});
-
-
-// Progressive enhancement: no-JS fallback handled in <noscript>
-</script>
-
-
-<noscript>
-<div style="padding:18px;max-width:980px;margin:18px auto;background:#fff;border-radius:8px;">
-<h2>Happy Birthday!</h2>
-<p>It seems JavaScript is disabled. Here's a simple static greeting: <strong>Happy Birthday!</strong></p>
-</div>
-</noscript>
-
-
-</body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; style-src 'self' 'unsafe-inline';
+                   img-src 'self' data:; script-src 'self'; media-src 'self';" />
+    <meta name="theme-color" content="#000000" />
+    <title>🎉 Happy Birthday!</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
 </html>
