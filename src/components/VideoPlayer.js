@@ -11,13 +11,8 @@ const VideoPlayer = () => {
     if (savedVideos) {
       setVideos(JSON.parse(savedVideos));
     } else {
-      // Default videos if none saved
-      const defaultVideos = [
-        { src: '/assets/videos/vid_sample.mp4', title: 'Gurudwara' },
-        { src: '/assets/videos/video2.mp4', title: 'Vacation Memories' },
-      ];
-      setVideos(defaultVideos);
-      localStorage.setItem('birthdayVideos', JSON.stringify(defaultVideos));
+      // Start with empty list if nothing in localStorage
+      setVideos([]);
     }
   }, []);
 

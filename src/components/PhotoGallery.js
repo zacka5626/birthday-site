@@ -20,17 +20,8 @@ const PhotoGallery = () => {
       // ignore and fall back to defaults
       // console.warn('Failed to parse saved images', err);
     }
-
-    // Default images if none saved or saved data invalid
-    const defaultImages = [
-      { id: 'default-1', src: '/assets/images/image1.jpeg', alt: 'Memory 1' },
-      { id: 'default-2', src: '/assets/images/image2.jpeg', alt: 'Memory 2' },
-      { id: 'default-3', src: '/assets/images/image3.jpeg', alt: 'Memory 3' },
-      { id: 'default-4', src: '/assets/images/image4.jpeg', alt: 'Memory 4' },
-      { id: 'default-5', src: '/assets/images/image5.jpeg', alt: 'Memory 5' }
-    ];
-    setImages(defaultImages);
-    localStorage.setItem('birthdayImages', JSON.stringify(defaultImages));
+    // No default static images: start empty if nothing in localStorage.
+    setImages([]);
   }, []);
 
   const handleImageUpload = (event) => {
@@ -98,8 +89,12 @@ const PhotoGallery = () => {
         </label>
       </div>
       <div className="gallery-grid">
-        {images.map((image, index) => (
-          <div key={image.id || index} className="gallery-item card-glow">
+        {images.length === 0 ? (
+          <div className="empty-state">No photos yet — add one to get started.</div>
+        ) : (
+          images.map((image, index) => {
+            return (
+              <div key={image.id || index} className="gallery-item card-glow">
             {/* cube wrapper provides 3D-hover effect but delegates clicks to open modal */}
             <div
               className="cube-wrapper"
@@ -138,8 +133,10 @@ const PhotoGallery = () => {
                 ×
               </button>
             )}
-          </div>
-        ))}
+              </div>
+            );
+          })
+        )}
       </div>
 
       {selectedImage && (
