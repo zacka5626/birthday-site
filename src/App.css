@@ -1,3 +1,4 @@
+/* 🌈 Base app styling with gradient background */
 .App {
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
@@ -6,9 +7,10 @@
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  transition: background 0.6s ease-in-out;
 }
 
-/* soft animated overlay for a dreamy effect */
+/* ✨ Dreamy overlay for subtle motion and depth */
 .App::before {
   content: "";
   position: absolute;
@@ -20,7 +22,7 @@
   animation: bgShift 8s linear infinite;
 }
 
-/* decorative soft blobs */
+/* 💫 Soft decorative blobs for extra glow */
 .App::after {
   content: "";
   position: absolute;
@@ -28,7 +30,8 @@
   height: 420px;
   right: -80px;
   top: -40px;
-  background: radial-gradient(circle at 30% 30%, rgba(255,214,233,0.35), transparent 30%), radial-gradient(circle at 70% 70%, rgba(0,212,255,0.12), transparent 30%);
+  background: radial-gradient(circle at 30% 30%, rgba(255,214,233,0.35), transparent 30%),
+              radial-gradient(circle at 70% 70%, rgba(0,212,255,0.12), transparent 30%);
   filter: blur(36px);
   pointer-events: none;
   mix-blend-mode: screen;
@@ -37,16 +40,109 @@
   z-index: 0;
 }
 
-.confetti-overlay { position: relative; }
+/* 🎉 Confetti overlay positioning */
+.confetti-overlay {
+  position: relative;
+}
 
-/* gentle transition for interactive elements */
-* { transition: color 180ms ease, background 180ms ease, opacity 160ms ease; }
-
+/* 🌬️ Gentle transition for smoother interactions */
 * {
+  transition: color 180ms ease, background 180ms ease, opacity 160ms ease;
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
   padding: 0;
+}
+
+/* 🎛️ Control panel (for name, message, theme colors) */
+.controls {
+  position: relative;
+  z-index: 5;
+  margin: 30px auto;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 25px 30px;
+  border-radius: 18px;
+  width: 80%;
+  max-width: 520px;
+  color: #fff;
+  backdrop-filter: blur(10px);
+  text-align: left;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* 📋 Label styling */
+.controls label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ✏️ Text input fields */
+.controls input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin-bottom: 14px;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.85);
+}
+
+/* 🎨 Color picker inputs */
+.color-inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.color-inputs input[type="color"] {
+  width: 55px;
+  height: 35px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  outline: none;
+  background: none;
+}
+
+/* 🌟 Animations */
+@keyframes bgShift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(10px, -10px) rotate(1deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🌤️ Responsive tweaks */
+@media (max-width: 600px) {
+  .controls {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .color-inputs {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
